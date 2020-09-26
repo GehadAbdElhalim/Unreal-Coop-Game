@@ -14,11 +14,14 @@ ASPickupActor::ASPickupActor()
 	SphereComp->SetSphereRadius(75);
 	SetRootComponent(SphereComp);
 
-
 	DecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("DecalComp"));
 	DecalComp->SetRelativeRotation(FRotator(90, 0, 0));
 	DecalComp->DecalSize = FVector(64, 75, 75);
 	DecalComp->SetupAttachment(RootComponent);
+
+	CooldownDuration = 10.0f;
+
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned
@@ -26,7 +29,10 @@ void ASPickupActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Respawn();
+	if (Role == ROLE_Authority)
+	{
+		Respawn();
+	}
 }
 
 void ASPickupActor::Respawn()
@@ -41,15 +47,13 @@ void ASPickupActor::Respawn()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	PowerUpInstance = GetWorld()->SpawnActor<ASPowerupActor>(PowerupClass, GetTransform(), SpawnParams);
-
-
 }
 
 void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	if (PowerUpInstance)
+	if (Role == ROLE_Authority && PowerUpInstance)
 	{
 		PowerUpInstance->ActivatePowerup();
 		PowerUpInstance = nullptr;
