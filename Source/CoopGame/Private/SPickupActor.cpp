@@ -6,6 +6,7 @@
 #include "Components/DecalComponent.h"
 #include "SPowerupActor.h"
 #include "TimerManager.h"
+#include "SCharacter.h"
 
 // Sets default values
 ASPickupActor::ASPickupActor()
@@ -55,6 +56,12 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (Role == ROLE_Authority && PowerUpInstance)
 	{
+		ASCharacter* Character = Cast<ASCharacter>(OtherActor);
+		if (Character)
+		{
+			PowerUpInstance->SetAffectedCharacter(Character);
+		}
+
 		PowerUpInstance->ActivatePowerup();
 		PowerUpInstance = nullptr;
 

@@ -39,6 +39,9 @@ protected:
 	UPROPERTY(ReplicatedUsing = OnRep_PowerupActive)
 	bool bIsPowerupActive;
 
+	UPROPERTY(BlueprintReadOnly)
+	class ASCharacter* AffectedCharacter;
+
 	UFUNCTION()
 	void OnRep_PowerupActive();
 
@@ -46,6 +49,8 @@ protected:
 	void OnPowerUpStateChanged(bool bNewIsActive);
 
 public:
+
+	void SetAffectedCharacter(ASCharacter* Character);
 
 	void ActivatePowerup();
 

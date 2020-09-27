@@ -4,6 +4,7 @@
 #include "SPowerupActor.h"
 #include "TimerManager.h"
 #include "Net/UnrealNetwork.h"
+#include "SCharacter.h"
 
 // Sets default values
 ASPowerupActor::ASPowerupActor()
@@ -42,6 +43,11 @@ void ASPowerupActor::OnTickPowerup()
 void ASPowerupActor::OnRep_PowerupActive()
 {
 	OnPowerUpStateChanged(bIsPowerupActive);
+}
+
+void ASPowerupActor::SetAffectedCharacter(ASCharacter* Character)
+{
+	AffectedCharacter = Character;
 }
 
 void ASPowerupActor::ActivatePowerup()
