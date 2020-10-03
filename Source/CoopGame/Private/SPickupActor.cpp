@@ -54,14 +54,17 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	if (Role == ROLE_Authority && PowerUpInstance)
+	if (PowerUpInstance)
 	{
 		ASCharacter* Character = Cast<ASCharacter>(OtherActor);
 		if (Character)
 		{
 			PowerUpInstance->SetAffectedCharacter(Character);
 		}
+	}
 
+	if (Role == ROLE_Authority && PowerUpInstance)
+	{
 		PowerUpInstance->ActivatePowerup();
 		PowerUpInstance = nullptr;
 
