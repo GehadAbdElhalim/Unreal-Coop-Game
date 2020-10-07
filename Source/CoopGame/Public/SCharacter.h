@@ -71,6 +71,9 @@ protected:
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	bool bDied;
 
+	UFUNCTION()
+	void OnRep_CurrentMovementSpeedChanged();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -79,4 +82,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual FVector GetPawnViewLocation() const override;
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CurrentMovementSpeedChanged, Category = "CharacterMovement")
+	float CurrentMovementSpeed;
+
+	UFUNCTION(BlueprintCallable, Category = "CharacterMovement")
+	void ChangeCurrentMovementSpeed(float NewValue);
 };

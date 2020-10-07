@@ -13,6 +13,7 @@
 #include "Engine/World.h"
 #include "CoopGame.h"
 #include "Net/UnrealNetwork.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -37,6 +38,10 @@ ASCharacter::ASCharacter()
 	ZoomInterpSpeed = 20;
 
 	WeaponAttachSocketName = "WeaponSocket";
+
+	UCharacterMovementComponent* movementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+
+	CurrentMovementSpeed = movementComp->MaxWalkSpeed;
 }
 
 // Called when the game starts or when spawned
@@ -123,6 +128,13 @@ void ASCharacter::OnHealthChanged(USHealthComponent* OwningHealthComp, float Hea
 	}
 }
 
+void ASCharacter::OnRep_CurrentMovementSpeedChanged()
+{
+	UCharacterMovementComponent* movementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+
+	movementComp->MaxWalkSpeed = CurrentMovementSpeed;
+}
+
 // Called every frame
 void ASCharacter::Tick(float DeltaTime)
 {
@@ -167,11 +179,18 @@ FVector ASCharacter::GetPawnViewLocation() const
 	return Super::GetPawnViewLocation();
 }
 
+void ASCharacter::ChangeCurrentMovementSpeed(float NewValue)
+{
+	CurrentMovementSpeed = NewValue;
+	OnRep_CurrentMovementSpeedChanged();
+}
+
 void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ASCharacter, CurrentWeapon);
 	DOREPLIFETIME(ASCharacter, bDied);
+	DOREPLIFETIME(ASCharacter, CurrentMovementSpeed);
 }
 
