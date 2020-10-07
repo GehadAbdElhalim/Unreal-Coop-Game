@@ -39,9 +39,7 @@ ASCharacter::ASCharacter()
 
 	WeaponAttachSocketName = "WeaponSocket";
 
-	UCharacterMovementComponent* movementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
-
-	CurrentMovementSpeed = movementComp->MaxWalkSpeed;
+	CurrentMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 // Called when the game starts or when spawned
@@ -130,9 +128,7 @@ void ASCharacter::OnHealthChanged(USHealthComponent* OwningHealthComp, float Hea
 
 void ASCharacter::OnRep_CurrentMovementSpeedChanged()
 {
-	UCharacterMovementComponent* movementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
-
-	movementComp->MaxWalkSpeed = CurrentMovementSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = CurrentMovementSpeed;
 }
 
 // Called every frame
