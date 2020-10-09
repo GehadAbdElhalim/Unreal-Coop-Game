@@ -57,19 +57,17 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (PowerUpInstance)
 	{
 		ASCharacter* Character = Cast<ASCharacter>(OtherActor);
-		if (Character)
+
+		if (Role == ROLE_Authority && Character)
 		{
 			PowerUpInstance->SetAffectedCharacter(Character);
+
+			PowerUpInstance->ActivatePowerup();
+			PowerUpInstance = nullptr;
+
+			// Set timer to Respawn
+			GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
 		}
-	}
-
-	if (Role == ROLE_Authority && PowerUpInstance)
-	{
-		PowerUpInstance->ActivatePowerup();
-		PowerUpInstance = nullptr;
-
-		// Set timer to Respawn
-		GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPickupActor::Respawn, CooldownDuration);
 	}
 }
 
