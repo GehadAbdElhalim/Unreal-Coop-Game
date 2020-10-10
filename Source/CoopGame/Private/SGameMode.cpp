@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "SHealthComponent.h"
 #include "SGameState.h"
+#include "SPlayerState.h"
 
 ASGameMode::ASGameMode()
 {
@@ -13,6 +14,7 @@ ASGameMode::ASGameMode()
 	PrimaryActorTick.TickInterval = 1.0f;
 
 	GameStateClass = ASGameState::StaticClass();
+	PlayerStateClass = ASGameState::StaticClass();
 
 	TimeBetweenWaves = 2.0f;
 }
