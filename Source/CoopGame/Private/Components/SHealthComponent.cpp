@@ -65,6 +65,14 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, 
 		ASGameMode* GM = Cast<ASGameMode>(GetWorld()->GetAuthGameMode());
 		if (GM)
 		{
+			/*if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(1, 1.0f, FColor::Yellow, TEXT("DamageCauser" + DamageCauser->GetName()));
+				if (InstigatedBy)
+				{
+					GEngine->AddOnScreenDebugMessage(2, 1.0f, FColor::Yellow, TEXT("InstigatedBy" + InstigatedBy->GetName()));
+				}
+			}*/
 			GM->OnActorKilled.Broadcast(GetOwner(), DamageCauser, InstigatedBy);
 		}
 	}
