@@ -31,6 +31,7 @@ ASWeapon::ASWeapon()
 
 	BaseDamage = 20.0f;
 	RateOfFire = 600;
+	MaxSpread = 2.0f;
 
 	SetReplicates(true);
 
@@ -65,6 +66,23 @@ void ASWeapon::Fire()
 
 		FVector ShotDirection = EyeRotation.Vector();
 
+		if (bHasSpread)
+		{
+			/*if (!bIsFirstShot)
+			{*/
+			/*float RandomRadius = FMath::FRandRange(0, MaxSpread);
+			float RandomAngle = FMath::RandRange(0, 360);
+
+			TraceEnd = TraceEnd + GetActorRightVector().RotateAngleAxis(RandomAngle, FVector(0, 0, 1)) * RandomRadius;*/
+
+			float HalfRad = FMath::DegreesToRadians(MaxSpread);
+			ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
+			/*}
+			else {
+				bIsFirstShot = false;
+			}*/
+		}
+
 		FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
 
 		FCollisionQueryParams QueryParams;
@@ -72,20 +90,6 @@ void ASWeapon::Fire()
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
 		QueryParams.bReturnPhysicalMaterial = true;
-
-		if (bHasSpread) 
-		{
-			if (!bIsFirstShot) 
-			{
-				float RandomRadius = FMath::FRandRange(0, MaxSpread);
-				float RandomAngle = FMath::RandRange(0, 360);
-
-				TraceEnd = TraceEnd + GetActorRightVector().RotateAngleAxis(RandomAngle, FVector(0, 0, 1)) * RandomAngle;
-			}
-			else {
-				bIsFirstShot = false;
-			}
-		}
 
 		//Particle *Target* parameter
 		FVector TracerEndPoint = TraceEnd;

@@ -92,7 +92,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	bool bHasSpread;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (EditCondition = "bHasSpread"))
+	/* Bullet Spread in degrees */
+	UPROPERTY(EditAnywhere, Category = "Weapon", meta = (EditCondition = "bHasSpread"), meta = (ClampMin = 0.0f))
 	float MaxSpread;
 
 	UPROPERTY(ReplicatedUsing = OnRep_HitScanTrace)
