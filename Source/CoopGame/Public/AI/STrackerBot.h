@@ -73,6 +73,8 @@ protected:
 
 	FTimerHandle TimerHandle_SelfDamage;
 
+	FTimerHandle TimerHandle_RefreshPath;
+
 	void DamageSelf();
 
 	bool bStartedSelfDestruction;
@@ -84,6 +86,8 @@ protected:
 	class USoundCue* ExplodeSound;
 
 	void OnCheckNearByBots();
+
+	void RefreshPath();
 
 public:	
 	// Called every frame
